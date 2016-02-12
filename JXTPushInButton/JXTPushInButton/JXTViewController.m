@@ -35,7 +35,7 @@
     JXTPushInButton * btn = [JXTPushInButton touchUpOutsideCancelButtonWithType:UIButtonTypeCustom frame:CGRectMake(0, 0, ScreenWidth - 20, 80) title:@"按钮-1" titleColor:[UIColor blackColor] backgroundColor:[UIColor redColor] backgroundImage:nil andBlock:^{
         NSLog(@"frame内部松手执，行按钮-1");
     }];
-    btn.buttonScale = 1.5;
+    btn.buttonScale = 1.5;//这个设置其实无效，会自动判定的，超过0-1区间，还是默认值0.9
     btn.center = CGPointMake(self.view.frame.size.width/2., 80);
     [self.view addSubview:btn];
     
