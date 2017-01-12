@@ -29,23 +29,29 @@
 {
     [super viewDidLoad];
     
+    //解保留环
+    __weak typeof(self)weakSelf = self;
+    
     /**
      *  普通按钮
      */
     JXTPushInButton * btn = [JXTPushInButton touchUpOutsideCancelButtonWithType:UIButtonTypeCustom frame:CGRectMake(0, 0, ScreenWidth - 20, 80) title:@"按钮-1" titleColor:[UIColor blackColor] backgroundColor:[UIColor redColor] backgroundImage:nil andBlock:^{
-        NSLog(@"frame内部松手执，行按钮-1");
+//        NSLog(@"frame内部松手执，行按钮-1");
+        [weakSelf printLogMsg:@"frame内部松手执，行按钮-1"];
     }];
     btn.buttonScale = 1.5;//这个设置其实无效，会自动判定的，超过0-1区间，还是默认值0.9
     btn.center = CGPointMake(self.view.frame.size.width/2., 80);
     [self.view addSubview:btn];
     
     JXTPushInButton * btn2 = [JXTPushInButton touchUpOutsideCancelButtonWithType:UIButtonTypeCustom frame:CGRectMake(10, CGRectGetMaxY(btn.frame) + 10, ScreenWidth - 30 - 150, 80) title:@"按钮-2" titleColor:[UIColor blackColor] backgroundColor:[UIColor greenColor] backgroundImage:nil andBlock:^{
-        NSLog(@"frame内部松手执，执行按钮-2");
+//        NSLog(@"frame内部松手执，执行按钮-2");
+        [weakSelf printLogMsg:@"frame内部松手执，执行按钮-2"];
     }];
     [self.view addSubview:btn2];
     
     JXTPushInButton * btn3 = [JXTPushInButton touchUpOutsideCancelButtonWithType:UIButtonTypeCustom frame:CGRectMake(CGRectGetMaxX(btn2.frame) + 10, CGRectGetMaxY(btn.frame) + 10, 150, 80) title:@"按钮-3" titleColor:[UIColor blackColor] backgroundColor:[UIColor blueColor] backgroundImage:nil andBlock:^{
-        NSLog(@"frame内部松手执，执行按钮-3");
+//        NSLog(@"frame内部松手执，执行按钮-3");
+        [weakSelf printLogMsg:@"frame内部松手执，执行按钮-3"];
     }];
     [self.view addSubview:btn3];
     
@@ -56,7 +62,8 @@
     CGFloat gap = 5;
     
     JXTPushInButton * imgBtn1 = [JXTPushInButton buttonWithType:UIButtonTypeCustom frame:CGRectMake(gap, CGRectGetMaxY(btn2.frame) + 10, ScreenWidth - 2*gap, 80) title:nil titleColor:nil backgroundColor:nil backgroundImage:@"btn1" andBlock:^{
-        NSLog(@"执行图片按钮-1");
+//        NSLog(@"执行图片按钮-1");
+        [weakSelf printLogMsg:@"执行图片按钮-1"];
     }];
     imgBtn1.adjustsImageWhenHighlighted = NO;//去除点击灰色
     [self.view addSubview:imgBtn1];
@@ -74,12 +81,22 @@
         CGRect rect = value.CGRectValue;
         NSString * ima = [NSString stringWithFormat:@"btn%zd", i + 2 <= 4 ? i + 2 : i - 1];
         JXTPushInButton * imgBtn = [JXTPushInButton buttonWithType:UIButtonTypeCustom frame:rect title:nil titleColor:nil backgroundColor:nil backgroundImage:ima andBlock:^{
-            NSLog(@"执行图片按钮-%zd", i + 2);
+//            NSLog(@"执行图片按钮-%zd", i + 2);
+            [weakSelf printLogMsg:@"执行图片按钮-%zd", i + 2];
         }];
         imgBtn.buttonScale = 0.8;
         imgBtn.adjustsImageWhenHighlighted = NO;//去除点击灰色
         [self.view addSubview:imgBtn];
     }
+}
+
+- (void)printLogMsg:(NSString *)message, ...
+{
+    va_list args;
+    va_start(args, message);
+    NSString *logMsg = [[NSString alloc] initWithFormat:message arguments:args];
+    NSLog(@"%@", logMsg);
+    va_end(args);
 }
 
 - (void)didReceiveMemoryWarning {
